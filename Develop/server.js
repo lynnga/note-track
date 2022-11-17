@@ -4,6 +4,9 @@ const port = 3000;
 const path = require('path');
 const fs = require("fs");
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+
 
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname+'/public/notes.html'));
@@ -25,12 +28,19 @@ app.get('/api/notes', (req,res) => {
 })
 
 app.post('/api/notes',(req,res) => {
-
-    fs.appendFile('db/db.json',JSON.stringify(req.body), function (err) {
+  fs.readFile("db/db.json", "utf8", (err, myData) => {
+    if (err) {
+      console.log("File read failed:", err);
+      res.send("error");
+    }
+    const array = JSON.parse(myData)
+    array.push(req.body)
+  
+    fs.writeFile('db/db.json',JSON.stringify(array), function (err) {
         if (err) throw err;
-       res.send("k")
+       res.send("note added")
       });
-
+    })
 });
 
 
