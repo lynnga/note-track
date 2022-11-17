@@ -3,6 +3,7 @@ const app = express();
 const port = 3000;
 const path = require('path');
 const fs = require("fs");
+const { v4: uuidv4 } = require('uuid');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
@@ -33,6 +34,7 @@ app.post('/api/notes',(req,res) => {
       console.log("File read failed:", err);
       res.send("error");
     }
+    req.body.id = uuidv4();
     const array = JSON.parse(myData)
     array.push(req.body)
   
