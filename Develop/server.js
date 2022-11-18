@@ -34,6 +34,8 @@ app.post('/api/notes',(req,res) => {
       console.log("File read failed:", err);
       res.send("error");
     }
+    
+    
     req.body.id = uuidv4();
     const array = JSON.parse(myData)
     array.push(req.body)
@@ -44,9 +46,6 @@ app.post('/api/notes',(req,res) => {
       });
     })
 });
-
-
-
 
 
 
